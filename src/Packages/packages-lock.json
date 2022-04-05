@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.andtech.terminal": {
+      "version": "https://github.com/andtechstudios/command_terminal.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "03adc30ca6e232f3b3056d2f15c01fb544c93412"
+    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 2,
