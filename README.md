@@ -1,0 +1,3 @@
+# Installation
+* Window > Package Manager > Add package from git url...
+* Enter `https://github.com/andtechstudios/terminal.git`.
