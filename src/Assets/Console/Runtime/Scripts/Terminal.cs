@@ -23,9 +23,8 @@ namespace CommandTerminal
         [Range(0, 1)]
         float SmallTerminalRatio = 0.33f;
 
-        [Range(100, 1000)]
         [SerializeField]
-        float ToggleSpeed = 360;
+        float ToggleDuration = 0.2f;
 
         [SerializeField] string ToggleHotkey      = "`";
         [SerializeField] string ToggleFullHotkey  = "#`";
@@ -121,6 +120,7 @@ namespace CommandTerminal
             }
 
             state = new_state;
+            MoveTo(open_target);
         }
 
         public void ToggleState(TerminalState new_state) {
@@ -187,9 +187,29 @@ namespace CommandTerminal
                 return;
             }
 
-            HandleOpenness();
             window = GUILayout.Window(88, window, DrawConsole, "", window_style);
         }
+
+        void MoveTo(float position)
+		{
+            StopAllCoroutines();
+            StartCoroutine(MoveToAsync(position));
+		}
+
+        IEnumerator MoveToAsync(float position)
+		{
+            var initialPosition = current_open_t;
+            for (float t = 0.0f; t < ToggleDuration; t += Time.unscaledDeltaTime)
+			{
+                var alpha = t / ToggleDuration;
+                var beta = 1.0f - (1.0f - alpha) * (1.0f - alpha) * (1.0f - alpha) * (1.0f - alpha);
+
+                current_open_t = Mathf.Lerp(initialPosition, position, beta);
+
+                window = new Rect(0, current_open_t - real_window_size, Screen.width, real_window_size);
+                yield return null;
+			}
+		}
 
         void SetupWindow() {
             real_window_size = Screen.height * MaxHeight / 3;
@@ -316,25 +336,6 @@ namespace CommandTerminal
 
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
-        }
-
-        void HandleOpenness() {
-            float dt = ToggleSpeed * Time.unscaledDeltaTime;
-
-            if (current_open_t < open_target) {
-                current_open_t += dt;
-                if (current_open_t > open_target) current_open_t = open_target;
-            } else if (current_open_t > open_target) {
-                current_open_t -= dt;
-                if (current_open_t < open_target) current_open_t = open_target;
-            } else {
-                if (input_fix) {
-                    input_fix = false;
-                }
-                return; // Already at target
-            }
-
-            window = new Rect(0, current_open_t - real_window_size, Screen.width, real_window_size);
         }
 
         void EnterCommand() {
