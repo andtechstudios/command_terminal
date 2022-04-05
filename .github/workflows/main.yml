@@ -13,7 +13,6 @@ jobs:
         ref: master
     - run: |
         cd src/Assets/Console
-        echo "Version is ${{github.ref_name}}"
         npm version ${{github.ref_name}} --allow-same-version
     - uses: s0/git-publish-subdir-action@develop
       env:
