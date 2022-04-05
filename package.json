@@ -2,10 +2,10 @@
 	"name": "com.andtech.terminal",
 	"displayName": "Terminal",
 	"description": "",
-	"version": "0.1.0-pre.1",
 	"author": {
 		"name": "Andtech Studios",
 		"email": "andtechstudios@gmail.com",
 		"url": "https://andtechstudios.com"
-	}
+	},
+	"version": "0.1.0"
 }
